@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en" style="color-scheme:dark;background:#050507;">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<title>Dynamic Type — Skanda</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/style.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root {
+  color-scheme: dark;
+  --bg: #050507;
+  --surface: #0e0e12;
+  --surface-2: #141418;
+  --ink: #ffffff;
+  --ink-mid: rgba(255,255,255,0.55);
+  --ink-dim: rgba(255,255,255,0.28);
+  --border: rgba(255,255,255,0.08);
+  --border-hi: rgba(255,255,255,0.14);
+  --accent: rgba(255,255,255,0.9);
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: #050507 !important;
+  color: var(--ink);
+  font-family: 'Geist Sans','Geist',ui-sans-serif,system-ui,sans-serif;
+  font-size: 16px; line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255,255,255,0.025) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(255,255,255,0.02) 0%, transparent 45%);
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 22px 48px;
+  border-bottom: 1px solid transparent;
+  transition: background 0.3s, border-color 0.3s, backdrop-filter 0.3s;
+}
+nav.scrolled {
+  background: rgba(5,5,7,0.85);
+  backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  border-color: var(--border);
+}
+.nav-back {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: var(--ink-dim);
+  text-decoration: none; transition: color 0.15s; position: relative; z-index: 1;
+}
+.nav-back:hover { color: var(--ink); }
+.nav-back svg { transition: transform 0.2s; }
+.nav-back:hover svg { transform: translateX(-3px); }
+.nav-tag {
+  font-size: 11px; font-weight: 500; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--ink-dim); position: relative; z-index: 1;
+}
+
+/* ── PAGE ── */
+.page {
+  position: relative; z-index: 1;
+  max-width: 1100px; margin: 0 auto;
+  padding: 0 48px 160px;
+}
+
+/* ── HERO ── */
+.hero {
+  padding: 130px 0 80px;
+  opacity: 0; animation: rise 0.9s 0.1s cubic-bezier(0.16,1,0.3,1) forwards;
+}
+@keyframes rise { from{opacity:0;transform:translateY(24px);filter:blur(3px)} to{opacity:1;transform:none;filter:blur(0)} }
+
+.hero-eyebrow {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 11px; font-weight: 500; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--ink-dim); margin-bottom: 24px;
+}
+.hero-eyebrow-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: rgba(255,255,255,0.6);
+  animation: dot-pulse 2.5s ease-in-out infinite;
+}
+@keyframes dot-pulse { 0%,100%{transform:scale(1);opacity:0.5} 50%{transform:scale(1.5);opacity:1} }
+
+.hero-title {
+  font-family: "Space Grotesk", "Geist Sans", sans-serif;
+  font-size: clamp(52px,7vw,86px); font-weight: 500;
+  line-height: 1.04; letter-spacing: -0.035em;
+  color: var(--ink); margin-bottom: 28px;
+}
+.hero-title em { font-style: normal; font-weight: 300; color: rgba(255,255,255,0.35); }
+.hero-lead {
+  font-size: 18px; line-height: 1.65;
+  color: var(--ink-mid); max-width: 560px; margin-bottom: 48px;
+}
+.hero-lead strong { color: var(--ink); font-weight: 500; }
+.hero-stats { display: flex; gap: 40px; }
+.stat { display: flex; flex-direction: column; gap: 5px; }
+.stat-num { font-size: 30px; font-weight: 500; letter-spacing: -0.03em; color: var(--ink); line-height: 1; }
+.stat-num .unit { font-size: 18px; font-weight: 300; color: var(--ink-mid); }
+.stat-label { font-size: 12px; color: var(--ink-dim); }
+
+/* ── SECTION ── */
+.cs-section { margin-bottom: 112px; }
+.cs-label {
+  font-size: 11px; font-weight: 500; letter-spacing: 0.12em;
+  text-transform: uppercase; color: rgba(255,255,255,0.75);
+  padding-bottom: 20px; margin-bottom: 56px;
+  border-bottom: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: baseline;
+}
+.cs-label span { font-weight: 400; letter-spacing: 0; text-transform: none; font-size: 12px; color: var(--ink-dim); }
+.cs-h2 { font-family: "Space Grotesk", "Geist Sans", sans-serif; font-size: clamp(28px,3.5vw,44px); font-weight: 500; letter-spacing: -0.025em; line-height: 1.1; color: var(--ink); margin-bottom: 20px; }
+.cs-h2 em { font-style: normal; font-weight: 300; color: rgba(255,255,255,0.35); }
+.cs-body { font-size: 15px; line-height: 1.8; color: var(--ink-mid); }
+.cs-body strong { color: var(--ink); font-weight: 500; }
+.cs-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start; }
+.cs-3col { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+
+/* ── PULL QUOTE ── */
+.pull-quote {
+  font-family: 'Instrument Serif', serif; font-style: italic;
+  font-size: clamp(20px,2.6vw,32px); line-height: 1.5;
+  color: var(--ink); padding: 52px 0;
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  margin: 64px 0;
+}
+.pull-quote em { color: rgba(255,255,255,0.9); font-style: italic; }
+
+/* ── STAT CARDS ── */
+.stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 28px; }
+.stat-card-num { font-size: 38px; font-weight: 500; letter-spacing: -0.03em; color: var(--ink); line-height: 1; margin-bottom: 8px; }
+.stat-card-num .unit { font-size: 20px; font-weight: 300; color: var(--ink-mid); }
+.stat-card-label { font-size: 13px; color: var(--ink-mid); line-height: 1.5; }
+
+/* ── DEVICE FRAME ── */
+.device-frame {
+  width: 280px;
+  background: #0a0a0e;
+  border-radius: 40px;
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow:
+    0 0 0 8px #0e0e12,
+    0 0 0 9px rgba(255,255,255,0.06),
+    0 32px 80px rgba(0,0,0,0.7);
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+/* Notch */
+.device-frame::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%; transform: translateX(-50%);
+  width: 100px; height: 28px;
+  background: #0a0a0e;
+  border-radius: 0 0 20px 20px;
+  z-index: 10;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-top: none;
+}
+/* Screen reflection */
+.device-frame::after {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 50%;
+  background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 100%);
+  pointer-events: none; z-index: 5; border-radius: 40px 40px 0 0;
+}
+.device-screen {
+  padding: 48px 24px 32px;
+  min-height: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  position: relative; z-index: 1;
+}
+.device-size-name {
+  font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: rgba(255,255,255,0.25); margin-bottom: 32px;
+  font-family: 'Geist Sans', sans-serif;
+}
+
+/* ── THE BUTTON inside device ── */
+.demo-btn {
+  background: #ffffff;
+  color: #050507;
+  border: none;
+  border-radius: 10px;
+  font-family: -apple-system, 'SF Pro Text', 'Geist Sans', sans-serif;
+  font-weight: 600;
+  cursor: default;
+  padding: 0 20px;
+  height: 2.5em;
+  line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+  width: 100%;
+  max-width: 220px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: font-size 0.4s cubic-bezier(0.16,1,0.3,1), height 0.4s cubic-bezier(0.16,1,0.3,1);
+}
+.demo-btn.overflow { white-space: normal; text-overflow: unset; text-align: center; height: auto; padding: 12px 20px; }
+
+/* Overflow indicator */
+.overflow-badge {
+  margin-top: 12px;
+  font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;
+  padding: 3px 8px; border-radius: 100px;
+  border: 1px solid; font-family: 'Geist Sans', sans-serif;
+  opacity: 0; transition: opacity 0.3s;
+}
+.overflow-badge.fail { color: #ff7b7b; border-color: rgba(255,85,85,0.3); background: rgba(255,85,85,0.08); opacity: 1; }
+.overflow-badge.warn { color: #f5c842; border-color: rgba(245,200,66,0.3); background: rgba(245,200,66,0.08); opacity: 1; }
+.overflow-badge.pass { color: #6ee89a; border-color: rgba(62,207,142,0.3); background: rgba(62,207,142,0.08); opacity: 1; }
+
+/* ── DEVICE GRID ── */
+.device-grid {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+  overflow-x: auto;
+  padding: 20px 0 32px;
+  scrollbar-width: none;
+}
+.device-grid::-webkit-scrollbar { display: none; }
+
+.device-col {
+  display: flex; flex-direction: column; align-items: center; gap: 16px;
+  flex-shrink: 0;
+}
+.device-label {
+  font-size: 11px; font-weight: 500; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--ink-dim); text-align: center;
+}
+.device-sub {
+  font-size: 11px; color: rgba(255,255,255,0.2); text-align: center;
+  margin-top: -10px;
+}
+
+/* ── SLIDER SECTION ── */
+.slider-shell {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+}
+.slider-header {
+  padding: 18px 28px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--surface-2);
+}
+.slider-title { font-size: 12px; font-weight: 500; color: var(--ink-mid); letter-spacing: 0.04em; }
+.slider-value-display {
+  font-size: 13px; font-weight: 500; color: var(--ink);
+  font-family: 'Geist Mono', monospace;
+}
+
+.slider-body {
+  padding: 40px 40px 32px;
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  gap: 48px;
+  align-items: center;
+}
+
+/* Live preview area */
+.slider-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+}
+.slider-btn-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+}
+.live-btn {
+  background: #ffffff;
+  color: #050507;
+  border: none;
+  border-radius: 10px;
+  font-family: -apple-system, 'SF Pro Text', 'Geist Sans', sans-serif;
+  font-weight: 600;
+  cursor: default;
+  padding: 0 24px;
+  height: 2.5em;
+  display: flex; align-items: center;
+  white-space: nowrap;
+  transition: font-size 0.3s cubic-bezier(0.16,1,0.3,1), height 0.3s;
+  max-width: 100%;
+  overflow: hidden;
+}
+.live-btn.wrapping {
+  white-space: normal;
+  height: auto;
+  padding: 12px 24px;
+  text-align: center;
+  justify-content: center;
+}
+
+/* Spec annotation */
+.spec-annotation {
+  display: flex; flex-direction: column; gap: 6px;
+  width: 100%;
+}
+.spec-row {
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 12px;
+}
+.spec-key { color: var(--ink-dim); font-family: 'Geist Mono', monospace; font-size: 11px; }
+.spec-val { color: var(--ink); font-family: 'Geist Mono', monospace; font-size: 11px; font-weight: 500; }
+.spec-val.changed { color: #f5c842; }
+.spec-val.broken  { color: #ff7b7b; }
+
+/* Slider control */
+.slider-controls {
+  display: flex; flex-direction: column; gap: 24px;
+}
+.dt-sizes { display: flex; flex-direction: column; gap: 8px; }
+.dt-size-btn {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: inherit;
+}
+.dt-size-btn:hover { border-color: var(--border-hi); background: rgba(255,255,255,0.03); }
+.dt-size-btn.active { border-color: rgba(255,255,255,0.25); background: rgba(255,255,255,0.06); }
+.dt-size-name { font-size: 12px; font-weight: 500; color: var(--ink); }
+.dt-size-pct  { font-size: 11px; color: var(--ink-dim); font-family: 'Geist Mono', monospace; }
+.dt-size-indicator {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: transparent; border: 1px solid var(--border-hi);
+  transition: all 0.15s;
+}
+.dt-size-btn.active .dt-size-indicator { background: var(--ink); border-color: var(--ink); }
+.dt-size-btn.warn .dt-size-indicator  { background: #f5c842; border-color: #f5c842; }
+.dt-size-btn.fail .dt-size-indicator  { background: #ff7b7b; border-color: #ff7b7b; }
+
+/* Range slider */
+.range-wrap { display: flex; flex-direction: column; gap: 10px; }
+.range-labels { display: flex; justify-content: space-between; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-dim); }
+input[type="range"] {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 3px;
+  background: var(--border);
+  border-radius: 100px; outline: none; cursor: pointer;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--ink);
+  border: 2px solid var(--surface);
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.2);
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+
+/* ── FINDING CARDS ── */
+.finding-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 14px;
+  margin-top: 48px;
+}
+.finding-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+}
+.finding-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+}
+.finding-card.critical::before { background: #ff5555; }
+.finding-card.warning::before  { background: #f5c842; }
+.finding-card.pass::before     { background: #3ecf8e; }
+.finding-label {
+  font-size: 9px; font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; margin-bottom: 12px;
+  display: flex; align-items: center; gap: 7px;
+}
+.finding-card.critical .finding-label { color: #ff7b7b; }
+.finding-card.warning  .finding-label { color: #f5c842; }
+.finding-card.pass     .finding-label { color: #6ee89a; }
+.fl-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+.finding-title { font-size: 14px; font-weight: 500; color: var(--ink); margin-bottom: 8px; letter-spacing: -0.01em; }
+.finding-body  { font-size: 12px; line-height: 1.65; color: var(--ink-mid); }
+
+/* ── SPEC TABLE ── */
+.spec-table { width: 100%; border-collapse: collapse; }
+.spec-table th {
+  text-align: left; font-size: 10px; font-weight: 500;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--ink-dim); padding: 11px 18px;
+  border-bottom: 1px solid var(--border);
+}
+.spec-table td {
+  padding: 11px 18px; font-size: 13px; color: var(--ink-mid);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  vertical-align: middle;
+}
+.spec-table tr:last-child td { border-bottom: none; }
+.spec-table tr:hover td { background: rgba(255,255,255,0.02); }
+.tok { font-family: 'Geist Mono','Courier New',monospace; font-size: 11px; color: rgba(255,179,107,0.9); background: rgba(255,179,107,0.08); padding: 2px 7px; border-radius: 4px; white-space: nowrap; }
+.tok-val { font-family: 'Geist Mono','Courier New',monospace; font-size: 12px; color: var(--ink); }
+.sev-pill { font-size: 9px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 8px; border-radius: 100px; border: 1px solid; }
+.sev-pass { color: #6ee89a; border-color: rgba(62,207,142,0.3); background: rgba(62,207,142,0.08); }
+.sev-warn { color: #f5c842; border-color: rgba(245,200,66,0.3); background: rgba(245,200,66,0.08); }
+.sev-fail { color: #ff7b7b; border-color: rgba(255,85,85,0.3); background: rgba(255,85,85,0.08); }
+.token-shell { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+.token-shell-hdr { display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; border-bottom: 1px solid var(--border); background: var(--surface-2); }
+.token-shell-title { font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.6); }
+.token-shell-ct    { font-size: 11px; color: var(--ink-dim); }
+
+/* ── NEXT CARDS ── */
+.next-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 28px; }
+.next-icon  { color: rgba(255,255,255,0.4); margin-bottom: 14px; }
+.next-title { font-size: 15px; font-weight: 500; color: var(--ink); margin-bottom: 8px; letter-spacing: -0.01em; }
+.next-body  { font-size: 13px; color: var(--ink-mid); line-height: 1.65; }
+
+/* ── FOOTER ── */
+.case-footer {
+  position: relative; z-index: 1;
+  padding: 28px 48px; border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+  max-width: 1100px; margin: 0 auto;
+}
+.case-footer a { font-size: 13px; color: var(--ink-dim); text-decoration: none; display: flex; align-items: center; gap: 8px; transition: color 0.15s; }
+.case-footer a:hover { color: var(--ink); }
+.case-footer a svg { transition: transform 0.2s; }
+.case-footer a:first-child:hover svg { transform: translateX(-3px); }
+.case-footer a:last-child:hover svg { transform: translateX(3px); }
+.case-footer-ct { font-size: 12px; color: var(--ink-dim); }
+
+/* ── REVEAL ── */
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.on { opacity: 1; transform: none; }
+.d1{transition-delay:0.06s} .d2{transition-delay:0.13s} .d3{transition-delay:0.2s} .d4{transition-delay:0.28s} .d5{transition-delay:0.36s}
+
+@media (max-width: 860px) {
+  nav { padding: 18px 20px; }
+  .page { padding: 0 20px 100px; }
+  .hero { padding: 100px 0 64px; }
+  .cs-2col { grid-template-columns: 1fr; gap: 32px; }
+  .cs-3col, .finding-grid { grid-template-columns: 1fr; }
+  .slider-body { grid-template-columns: 1fr; gap: 32px; }
+  .case-footer { padding: 24px 20px; flex-direction: column; gap: 16px; }
+}
+
+/* ── BROKEN / FIXED TOGGLE ── */
+.impl-toggle {
+  display: flex;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 3px;
+  gap: 3px;
+}
+.impl-btn {
+  padding: 7px 16px;
+  border-radius: 7px;
+  font-size: 12px; font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: var(--ink-dim);
+  transition: all 0.2s;
+  letter-spacing: -0.01em;
+}
+.impl-btn.active-broken {
+  background: rgba(255,85,85,0.15);
+  color: #ff7b7b;
+}
+.impl-btn.active-fixed {
+  background: rgba(62,207,142,0.12);
+  color: #6ee89a;
+}
+
+/* Broken button styles */
+.live-btn.broken-impl {
+  height: 44px !important;
+  min-height: unset !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: clip !important;
+  font-size: inherit;
+  width: 220px;
+  max-width: 220px;
+  padding: 0 20px !important;
+}
+
+/* Overflow indicator under live button */
+.live-status-bar {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 11px; font-family: 'Geist Mono', monospace;
+  margin-top: 6px;
+  min-height: 20px;
+}
+.live-status-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+
+/* Device broken styles injected via class */
+.device-frame.showing-broken .demo-btn {
+  height: 44px !important;
+  min-height: unset !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: clip !important;
+  max-width: 200px !important;
+}
+.device-frame.showing-broken .demo-btn.overflow {
+  height: 44px !important;
+  white-space: nowrap !important;
+  padding: 0 20px !important;
+}
+
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="skanda-portfolio.html" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 2L4 7L9 12"/></svg>
+    Skanda
+  </a>
+  <div class="nav-tag">Case Study — 03</div>
+</nav>
+
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow"><span class="hero-eyebrow-dot"></span>Dynamic Type — Visualization</div>
+    <h1 class="hero-title">We spec it.<br><em>We never see it.</em></h1>
+    <p class="hero-lead">
+      Dynamic type is specced in every design system. <strong>Almost no one visualizes what actually happens</strong> when a user cranks their font size to Accessibility XL.
+    </p>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-num">~27<span class="unit">%</span></span><span class="stat-label">of iOS users change their default type size</span></div>
+      <div class="stat"><span class="stat-num">7</span><span class="stat-label">Dynamic Type sizes above the default</span></div>
+      <div class="stat"><span class="stat-num">0</span><span class="stat-label">Design reviews that show Accessibility XL</span></div>
+    </div>
+  </div>
+
+  <!-- THE ARGUMENT -->
+  <section class="cs-section reveal">
+    <div class="cs-label">The Problem <span>What we're missing in every design review</span></div>
+    <div class="cs-2col">
+      <div>
+        <h2 class="cs-h2">The spec says<br><em>use Dynamic Type.</em></h2>
+        <div class="cs-body">
+          <p>The spec says support Dynamic Type. The component gets built. The Figma file shows one size. Nobody ever checks what happens at Accessibility XL. <strong>Then a user with low vision opens your app.</strong></p>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px;padding-top:8px;">
+        <div class="stat-card reveal d1">
+          <div class="stat-card-num">190<span class="unit">%</span></div>
+          <div class="stat-card-label">Maximum type scale at Accessibility XL5 — nearly 2× the default font size</div>
+        </div>
+        <div class="stat-card reveal d2">
+          <div class="stat-card-num">1<span class="unit">screen</span></div>
+          <div class="stat-card-label">The single Figma frame almost every designer reviews — Default size, light mode</div>
+        </div>
+        <div class="stat-card reveal d3">
+          <div class="stat-card-num">1 in 5</div>
+          <div class="stat-card-label">Americans have a disability — many depend on accessibility text sizes daily</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="pull-quote reveal">
+    A button that looks perfect at Default<br>
+    can completely <em>break at Accessibility Large.</em><br>
+    We just never showed anyone.
+  </div>
+
+  <!-- SIDE BY SIDE DEVICE VIEW -->
+  <section class="cs-section reveal">
+    <div class="cs-label">All Sizes, Side by Side <span>What a primary button actually looks like across every Dynamic Type setting</span></div>
+
+    <div class="device-grid" id="deviceGrid">
+      <!-- Populated by JS -->
+    </div>
+  </section>
+
+  <!-- INTERACTIVE SLIDER -->
+  <section class="cs-section reveal">
+    <div class="cs-label">Live Scale <span>Drag or select — watch the button respond</span></div>
+
+    <div class="slider-shell">
+      <div class="slider-header">
+        <span class="slider-title">Primary Button — Dynamic Type Simulation</span>
+        <div style="display:flex;align-items:center;gap:16px;">
+          <div class="impl-toggle">
+            <button class="impl-btn active-broken" id="brokenBtn">Broken</button>
+            <button class="impl-btn" id="fixedBtn">Fixed</button>
+          </div>
+          <span class="slider-value-display" id="sliderValueDisplay">Default — 100%</span>
+        </div>
+      </div>
+      <div class="slider-body">
+        <!-- Left: live button + spec -->
+        <div class="slider-preview">
+          <div class="slider-btn-wrap">
+            <div style="font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:4px;">Live preview</div>
+            <button class="live-btn" id="liveBtn">Confirm Payment</button>
+          </div>
+          <div class="live-status-bar" id="liveStatusBar">
+            <span class="live-status-dot" id="liveStatusDot" style="background:#6ee89a"></span>
+            <span id="liveStatusText" style="color:#6ee89a">Text fits — no overflow</span>
+          </div>
+          <div class="spec-annotation">
+            <div style="font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:6px;">Computed values</div>
+            <div class="spec-row"><span class="spec-key">font-size</span><span class="spec-val" id="specFontSize">17px</span></div>
+            <div class="spec-row"><span class="spec-key">btn height</span><span class="spec-val" id="specHeight">44px</span></div>
+            <div class="spec-row"><span class="spec-key">line-height</span><span class="spec-val" id="specLineHeight">1.0</span></div>
+            <div class="spec-row"><span class="spec-key">status</span><span class="spec-val" id="specStatus">Pass</span></div>
+          </div>
+        </div>
+
+        <!-- Right: size buttons + range -->
+        <div class="slider-controls">
+          <div class="dt-sizes" id="dtSizes">
+            <!-- Populated by JS -->
+          </div>
+          <div class="range-wrap">
+            <input type="range" id="typeSlider" min="0" max="11" step="1" value="0">
+            <div class="range-labels"><span>Default</span><span>AX5</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINDINGS -->
+  <section class="cs-section reveal">
+    <div class="cs-label">What Breaks and When <span>Three categories of failure</span></div>
+    <div class="finding-grid">
+      <div class="finding-card critical">
+        <div class="finding-label"><span class="fl-dot"></span>Critical</div>
+        <div class="finding-title">Text truncates silently</div>
+        <div class="finding-body">At Accessibility sizes, <code style="font-size:11px;color:rgba(255,179,107,0.9);background:rgba(255,179,107,0.08);padding:1px 5px;border-radius:3px;">white-space: nowrap</code> clips the label with no indication to the user. The button still appears functional. The label is gone.</div>
+      </div>
+      <div class="finding-card warning">
+        <div class="finding-label"><span class="fl-dot"></span>Warning</div>
+        <div class="finding-title">Fixed-height containers break</div>
+        <div class="finding-body">Buttons with a hardcoded <code style="font-size:11px;color:rgba(255,179,107,0.9);background:rgba(255,179,107,0.08);padding:1px 5px;border-radius:3px;">height: 44px</code> overflow their container at larger sizes. The text bleeds into adjacent elements or gets clipped by overflow hidden.</div>
+      </div>
+      <div class="finding-card pass">
+        <div class="finding-label"><span class="fl-dot"></span>Solution</div>
+        <div class="finding-title">Use min-height and em units</div>
+        <div class="finding-body">Setting <code style="font-size:11px;color:rgba(255,179,107,0.9);background:rgba(255,179,107,0.08);padding:1px 5px;border-radius:3px;">min-height: 2.5em</code> and <code style="font-size:11px;color:rgba(255,179,107,0.9);background:rgba(255,179,107,0.08);padding:1px 5px;border-radius:3px;">height: auto</code> lets the button grow with the text. The layout adapts instead of breaking.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOKEN TABLE -->
+  <section class="cs-section reveal">
+    <div class="cs-label">The Right Token Model <span>What the spec should actually say</span></div>
+    <div class="token-shell">
+      <div class="token-shell-hdr">
+        <span class="token-shell-title">Button — Dynamic Type Token Schema</span>
+        <span class="token-shell-ct">8 tokens</span>
+      </div>
+      <table class="spec-table">
+        <thead><tr><th>Token</th><th>Wrong value</th><th>Correct value</th><th>At AX3</th></tr></thead>
+        <tbody>
+          <tr><td><span class="tok">btn.height</span></td><td><span class="tok-val" style="color:#ff7b7b;">44px</span></td><td><span class="tok-val">min-height: 2.5em</span></td><td><span class="sev-pill sev-pass">Adapts</span></td></tr>
+          <tr><td><span class="tok">btn.font-size</span></td><td><span class="tok-val" style="color:#ff7b7b;">16px</span></td><td><span class="tok-val">1rem (system-relative)</span></td><td><span class="sev-pill sev-pass">Scales</span></td></tr>
+          <tr><td><span class="tok">btn.padding.v</span></td><td><span class="tok-val" style="color:#f5c842;">12px</span></td><td><span class="tok-val">0.7em</span></td><td><span class="sev-pill sev-pass">Scales</span></td></tr>
+          <tr><td><span class="tok">btn.padding.h</span></td><td><span class="tok-val" style="color:#f5c842;">24px</span></td><td><span class="tok-val">1.4em</span></td><td><span class="sev-pill sev-pass">Scales</span></td></tr>
+          <tr><td><span class="tok">btn.white-space</span></td><td><span class="tok-val" style="color:#ff7b7b;">nowrap</span></td><td><span class="tok-val">normal (allow wrap)</span></td><td><span class="sev-pill sev-pass">Wraps</span></td></tr>
+          <tr><td><span class="tok">btn.line-height</span></td><td><span class="tok-val" style="color:#f5c842;">1.0</span></td><td><span class="tok-val">1.2 (accommodate caps)</span></td><td><span class="sev-pill sev-pass">Readable</span></td></tr>
+          <tr><td><span class="tok">btn.border-radius</span></td><td><span class="tok-val" style="color:#f5c842;">8px</span></td><td><span class="tok-val">0.5em</span></td><td><span class="sev-pill sev-pass">Proportional</span></td></tr>
+          <tr><td><span class="tok">btn.icon-size</span></td><td><span class="tok-val" style="color:#ff7b7b;">20px</span></td><td><span class="tok-val">1.2em</span></td><td><span class="sev-pill sev-pass">Scales</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- NEXT -->
+  <section class="cs-section reveal">
+    <div class="cs-label">What's Next</div>
+    <div class="cs-3col">
+      <div class="next-card">
+        <div class="next-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18"/></svg>
+        </div>
+        <div class="next-title">Full component library</div>
+        <div class="next-body">Every component, visualized at all 12 sizes.</div>
+      </div>
+      <div class="next-card">
+        <div class="next-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="next-title">Figma plugin</div>
+        <div class="next-body">Generate a Dynamic Type preview from any frame.</div>
+      </div>
+      <div class="next-card">
+        <div class="next-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="next-title">Design review checklist</div>
+        <div class="next-body">No component ships without an AX3 sign-off.</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer class="case-footer">
+  <a href="skanda-portfolio.html">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 2L4 7L9 12"/></svg>
+    Back to Skanda
+  </a>
+  <div class="case-footer-ct">Case Study 03 / 03</div>
+  <a href="chameleon.html">
+    Start over: Chameleon
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 2L10 7L5 12"/></svg>
+  </a>
+</footer>
+
+<script>
+// iOS Dynamic Type sizes
+const DT_SIZES = [
+  { name: 'Default',    pct: 100, ios: 'Large',                       status: 'pass' },
+  { name: 'X-Large',   pct: 112, ios: 'XLarge',                      status: 'pass' },
+  { name: 'XX-Large',  pct: 118, ios: 'XXLarge',                     status: 'pass' },
+  { name: 'XXX-Large', pct: 124, ios: 'XXXLarge',                    status: 'pass' },
+  { name: 'AX1',       pct: 135, ios: 'Accessibility Large',          status: 'warn' },
+  { name: 'AX2',       pct: 147, ios: 'Accessibility XLarge',         status: 'warn' },
+  { name: 'AX3',       pct: 159, ios: 'Accessibility XXLarge',        status: 'warn' },
+  { name: 'AX4',       pct: 171, ios: 'Accessibility XXXLarge',       status: 'fail' },
+  { name: 'AX5',       pct: 190, ios: 'Accessibility AX5',            status: 'fail' },
+];
+
+const BASE_FONT = 17;
+let currentIdx = 0;
+let isBroken = true; // start broken so people see the problem first
+
+// ── BUILD DEVICE GRID ──
+function buildDeviceGrid() {
+  const grid = document.getElementById('deviceGrid');
+  const selected = [0, 2, 4, 6, 8];
+  selected.forEach((idx, i) => {
+    const size = DT_SIZES[idx];
+    const fs = (BASE_FONT * size.pct / 100).toFixed(1);
+    const col = document.createElement('div');
+    col.className = 'device-col reveal d' + (i+1);
+    const shouldWrap = size.pct >= 159;
+    col.innerHTML = `
+      <div class="device-label">${size.name}</div>
+      <div class="device-sub">${size.pct}%</div>
+      <div class="device-frame" id="deviceFrame${idx}">
+        <div class="device-screen">
+          <div class="device-size-name">${size.ios}</div>
+          <button class="demo-btn${shouldWrap ? ' overflow' : ''}" id="deviceBtn${idx}" style="font-size:${fs}px;">Confirm Payment</button>
+        </div>
+      </div>
+      <span class="overflow-badge ${size.status}" id="deviceBadge${idx}">${size.status === 'pass' ? 'Pass' : size.status === 'warn' ? 'Warning' : 'Critical'}</span>`;
+    grid.appendChild(col);
+  });
+  updateDeviceFrames();
+}
+
+function updateDeviceFrames() {
+  const selected = [0, 2, 4, 6, 8];
+  selected.forEach(idx => {
+    const frame = document.getElementById('deviceFrame' + idx);
+    const btn   = document.getElementById('deviceBtn' + idx);
+    const badge = document.getElementById('deviceBadge' + idx);
+    if (!frame || !btn) return;
+    const size = DT_SIZES[idx];
+    const fs   = (BASE_FONT * size.pct / 100);
+    btn.style.fontSize = fs + 'px';
+
+    if (isBroken) {
+      frame.classList.add('showing-broken');
+      // Force broken styles inline
+      btn.style.height = '44px';
+      btn.style.minHeight = 'unset';
+      btn.style.whiteSpace = 'nowrap';
+      btn.style.overflow = 'hidden';
+      btn.style.textOverflow = 'clip';
+      btn.style.maxWidth = '200px';
+      btn.style.padding = '0 20px';
+      btn.classList.remove('overflow');
+
+      // Show badge based on actual breakage
+      if (size.pct >= 147) {
+        badge.className = 'overflow-badge fail';
+        badge.textContent = 'Text clipped';
+      } else if (size.pct >= 118) {
+        badge.className = 'overflow-badge warn';
+        badge.textContent = 'Tight';
+      } else {
+        badge.className = 'overflow-badge pass';
+        badge.textContent = 'Pass';
+      }
+    } else {
+      frame.classList.remove('showing-broken');
+      btn.style.height = '';
+      btn.style.minHeight = '2.5em';
+      btn.style.whiteSpace = 'normal';
+      btn.style.overflow = '';
+      btn.style.textOverflow = '';
+      btn.style.maxWidth = '220px';
+      btn.style.padding = size.pct >= 159 ? '12px 20px' : '0 20px';
+      if (size.pct >= 159) btn.classList.add('overflow');
+      else btn.classList.remove('overflow');
+      badge.className = 'overflow-badge ' + size.status;
+      badge.textContent = size.status === 'pass' ? 'Pass' : size.status === 'warn' ? 'Warning' : 'Adapts';
+    }
+  });
+}
+
+// ── BUILD SIZE BUTTONS ──
+function buildSizeButtons() {
+  const container = document.getElementById('dtSizes');
+  DT_SIZES.forEach((size, i) => {
+    const btn = document.createElement('button');
+    btn.className = `dt-size-btn ${i === 0 ? 'active' : ''} ${size.status}`;
+    btn.dataset.idx = i;
+    btn.innerHTML = `
+      <div>
+        <div class="dt-size-name">${size.name}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span class="dt-size-pct">${size.pct}%</span>
+        <span class="dt-size-indicator"></span>
+      </div>`;
+    btn.addEventListener('click', () => applySize(parseInt(btn.dataset.idx)));
+    container.appendChild(btn);
+  });
+}
+
+// ── APPLY SIZE ──
+function applySize(idx) {
+  currentIdx = idx;
+  const size = DT_SIZES[idx];
+  const fs   = (BASE_FONT * size.pct / 100);
+
+  const btn = document.getElementById('liveBtn');
+  btn.style.fontSize = fs + 'px';
+
+  if (isBroken) {
+    // Hardcoded broken implementation
+    btn.style.height       = '44px';
+    btn.style.minHeight    = 'unset';
+    btn.style.whiteSpace   = 'nowrap';
+    btn.style.overflow     = 'hidden';
+    btn.style.textOverflow = 'clip';
+    btn.style.maxWidth     = '280px';
+    btn.style.padding      = '0 24px';
+    btn.classList.remove('wrapping');
+
+    // Status
+    const dot  = document.getElementById('liveStatusDot');
+    const text = document.getElementById('liveStatusText');
+    if (size.pct >= 147) {
+      dot.style.background  = '#ff7b7b';
+      text.style.color      = '#ff7b7b';
+      text.textContent      = 'Text clipped — label invisible to user';
+    } else if (size.pct >= 118) {
+      dot.style.background  = '#f5c842';
+      text.style.color      = '#f5c842';
+      text.textContent      = 'Getting tight — verify with real device';
+    } else {
+      dot.style.background  = '#6ee89a';
+      text.style.color      = '#6ee89a';
+      text.textContent      = 'Fits — no issues yet';
+    }
+
+    // Spec
+    document.getElementById('specFontSize').textContent = fs.toFixed(1) + 'px';
+    document.getElementById('specFontSize').className   = 'spec-val' + (size.pct > 124 ? ' changed' : '');
+    document.getElementById('specHeight').textContent   = '44px (fixed — breaking)';
+    document.getElementById('specHeight').className     = 'spec-val' + (size.pct >= 147 ? ' broken' : size.pct > 100 ? ' changed' : '');
+    document.getElementById('specLineHeight').textContent = '1.0';
+    const statusEl = document.getElementById('specStatus');
+    if (size.pct >= 147) {
+      statusEl.textContent = 'Critical — text clipped';
+      statusEl.className   = 'spec-val broken';
+    } else if (size.pct >= 118) {
+      statusEl.textContent = 'Warning — monitor closely';
+      statusEl.className   = 'spec-val changed';
+    } else {
+      statusEl.textContent = 'Pass';
+      statusEl.className   = 'spec-val';
+    }
+
+  } else {
+    // Correct implementation
+    btn.style.height       = 'auto';
+    btn.style.minHeight    = '2.5em';
+    btn.style.whiteSpace   = 'normal';
+    btn.style.overflow     = '';
+    btn.style.textOverflow = '';
+    btn.style.maxWidth     = '100%';
+    btn.style.padding      = size.pct >= 159 ? '12px 24px' : '0 24px';
+
+    if (size.pct >= 159) btn.classList.add('wrapping');
+    else btn.classList.remove('wrapping');
+
+    const dot  = document.getElementById('liveStatusDot');
+    const text = document.getElementById('liveStatusText');
+    if (size.pct >= 159) {
+      dot.style.background  = '#f5c842';
+      text.style.color      = '#f5c842';
+      text.textContent      = 'Text wraps — layout adapts correctly';
+    } else {
+      dot.style.background  = '#6ee89a';
+      text.style.color      = '#6ee89a';
+      text.textContent      = 'Scales correctly — no overflow';
+    }
+
+    document.getElementById('specFontSize').textContent   = fs.toFixed(1) + 'px';
+    document.getElementById('specFontSize').className     = 'spec-val' + (size.pct > 124 ? ' changed' : '');
+    document.getElementById('specHeight').textContent     = 'min-height: ' + (fs * 2.5).toFixed(0) + 'px (adapts)';
+    document.getElementById('specHeight').className       = 'spec-val';
+    document.getElementById('specLineHeight').textContent = '1.2';
+    document.getElementById('specStatus').textContent     = size.pct >= 159 ? 'Wrapping — intentional' : 'Pass';
+    document.getElementById('specStatus').className       = 'spec-val';
+  }
+
+  document.getElementById('sliderValueDisplay').textContent = `${size.name} — ${size.pct}%`;
+  document.querySelectorAll('.dt-size-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+  document.getElementById('typeSlider').value = idx;
+}
+
+// ── TOGGLE BROKEN / FIXED ──
+document.getElementById('brokenBtn').addEventListener('click', () => {
+  isBroken = true;
+  document.getElementById('brokenBtn').className = 'impl-btn active-broken';
+  document.getElementById('fixedBtn').className  = 'impl-btn';
+  updateDeviceFrames();
+  applySize(currentIdx);
+});
+document.getElementById('fixedBtn').addEventListener('click', () => {
+  isBroken = false;
+  document.getElementById('brokenBtn').className = 'impl-btn';
+  document.getElementById('fixedBtn').className  = 'impl-btn active-fixed';
+  updateDeviceFrames();
+  applySize(currentIdx);
+});
+
+// ── SLIDER ──
+document.getElementById('typeSlider').addEventListener('input', function() {
+  applySize(parseInt(this.value));
+});
+
+// ── INIT ──
+buildDeviceGrid();
+buildSizeButtons();
+applySize(0); // start at default, broken mode
+
+
+
+
+// Nav scroll
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 10), { passive: true });
+
+// Reveal
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); obs.unobserve(e.target); } });
+}, { threshold: 0.07 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

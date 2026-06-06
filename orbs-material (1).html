@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en" style="color-scheme:dark;background:#050507;">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<title>Orbs — Material Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/style.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root {
+  color-scheme: dark;
+  --bg: #050507;
+  --ink: #ffffff;
+  --ink-mid: rgba(255,255,255,0.6);
+  --ink-dim: rgba(255,255,255,0.35);
+  --border: rgba(255,255,255,0.08);
+  --border-hi: rgba(255,255,255,0.13);
+  --orb: radial-gradient(circle at center,
+    rgba(255,245,214,1) 0%,
+    rgba(255,179,107,0.95) 18%,
+    rgba(255,122,107,0.85) 42%,
+    rgba(192,132,252,0.65) 72%,
+    rgba(110,86,207,0) 100%);
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: #050507 !important;
+  color: var(--ink);
+  font-family: 'Geist Sans','Geist',ui-sans-serif,system-ui,sans-serif;
+  font-size: 16px; line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(circle at top left, rgba(192,132,252,0.09) 0%, transparent 40%),
+    radial-gradient(circle at bottom right, rgba(255,150,100,0.07) 0%, transparent 35%);
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 22px 48px;
+  border-bottom: 1px solid transparent;
+  transition: background 0.3s, border-color 0.3s, backdrop-filter 0.3s;
+}
+nav.scrolled {
+  background: rgba(5,5,7,0.8);
+  backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  border-color: var(--border);
+}
+.nav-back {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: var(--ink-dim);
+  text-decoration: none; transition: color 0.15s;
+  position: relative; z-index: 1;
+}
+.nav-back:hover { color: var(--ink); }
+.nav-back svg { transition: transform 0.2s; }
+.nav-back:hover svg { transform: translateX(-3px); }
+.nav-tag {
+  font-size: 11px; font-weight: 500; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--ink-dim);
+  position: relative; z-index: 1;
+}
+
+/* ── PAGE ── */
+.page {
+  position: relative; z-index: 1;
+  max-width: 1100px; margin: 0 auto;
+  padding: 0 48px 160px;
+}
+
+/* ── HERO ── */
+.hero {
+  padding: 120px 0 72px;
+  opacity: 0; animation: rise 0.9s 0.1s cubic-bezier(0.16,1,0.3,1) forwards;
+}
+@keyframes rise { from{opacity:0;transform:translateY(24px);filter:blur(3px)} to{opacity:1;transform:none;filter:blur(0)} }
+
+.hero-eyebrow {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 11px; font-weight: 500; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--ink-dim); margin-bottom: 24px;
+}
+.hero-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,200,100,1), rgba(255,120,100,0.8));
+  animation: dot-pulse 2.5s ease-in-out infinite;
+}
+@keyframes dot-pulse { 0%,100%{transform:scale(1);opacity:0.7} 50%{transform:scale(1.5);opacity:1} }
+
+.hero-title {
+  font-family: "Space Grotesk", "Geist Sans", sans-serif;
+  font-size: clamp(52px,7vw,86px); font-weight: 500;
+  line-height: 1.04; letter-spacing: -0.035em;
+  color: var(--ink); margin-bottom: 28px;
+}
+.hero-title em { font-style: normal; font-weight: 300; color: rgba(255,255,255,0.35); }
+.hero-lead {
+  font-size: 18px; line-height: 1.65;
+  color: var(--ink-mid); max-width: 600px; margin-bottom: 56px;
+}
+.hero-lead strong { color: var(--ink); font-weight: 500; }
+.hero-stats { display: flex; gap: 40px; }
+.stat { display: flex; flex-direction: column; gap: 5px; }
+.stat-num { font-size: 30px; font-weight: 500; letter-spacing: -0.03em; color: var(--ink); line-height: 1; }
+.stat-label { font-size: 12px; color: var(--ink-dim); }
+
+/* ── SECTIONS ── */
+.cs-section { margin-bottom: 112px; }
+.cs-label {
+  font-size: 11px; font-weight: 500; letter-spacing: 0.12em;
+  text-transform: uppercase; color: rgba(255,255,255,0.75);
+  padding-bottom: 20px; margin-bottom: 56px;
+  border-bottom: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: baseline;
+}
+.cs-label span { font-weight: 400; letter-spacing: 0; text-transform: none; font-size: 12px; color: var(--ink-dim); }
+.cs-h2 { font-family: "Space Grotesk", "Geist Sans", sans-serif; font-size: clamp(28px,3.5vw,44px); font-weight: 500; letter-spacing: -0.025em; line-height: 1.1; color: var(--ink); margin-bottom: 20px; }
+.cs-h2 em { font-style: normal; font-weight: 300; color: rgba(255,255,255,0.35); }
+.cs-body { font-size: 15px; line-height: 1.8; color: var(--ink-mid); }
+.cs-body p + p { margin-top: 16px; }
+.cs-body strong { color: var(--ink); font-weight: 500; }
+.cs-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start; }
+.cs-3col { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+
+/* ── PULL QUOTE ── */
+.pull-quote {
+  font-family: 'Instrument Serif', serif; font-style: italic;
+  font-size: clamp(20px,2.6vw,32px); line-height: 1.5;
+  color: var(--ink); padding: 52px 0;
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  margin: 64px 0;
+}
+.pull-quote em { color: rgba(255,179,107,0.9); }
+
+/* ── GLASS PILL ── */
+.gpill {
+  position: relative; overflow: hidden; border-radius: 100px;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: linear-gradient(180deg, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.04) 100%);
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.04) inset, 0 20px 60px rgba(0,0,0,0.55);
+  backdrop-filter: blur(32px); -webkit-backdrop-filter: blur(32px);
+}
+.gpill::before {
+  content: ''; position: absolute; inset: 1px; border-radius: inherit;
+  border: 1px solid rgba(180,240,255,0.07); pointer-events: none;
+}
+.gpill::after {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 40%;
+  background: linear-gradient(180deg, rgba(255,255,255,0.14) 0%, transparent 100%);
+  border-radius: inherit; pointer-events: none; opacity: 0.7;
+}
+
+/* ── ORB ── */
+.orb {
+  position: absolute; border-radius: 50%;
+  background: var(--orb);
+  filter: blur(18px); opacity: 0.88;
+  pointer-events: none;
+}
+
+/* ── DEMO SHELL ── */
+.demo-shell {
+  border-radius: 20px; overflow: hidden;
+  border: 1px solid var(--border);
+  background: rgba(0,0,0,0.3);
+}
+.demo-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 13px 20px; border-bottom: 1px solid var(--border);
+  background: rgba(255,255,255,0.03);
+}
+.demo-dots { display: flex; gap: 6px; }
+.demo-dot-ui { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.1); }
+.demo-label { font-size: 11px; font-weight: 500; color: var(--ink-dim); letter-spacing: 0.05em; }
+.demo-body { padding: 52px 40px; }
+
+.state-label {
+  font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: rgba(255,255,255,0.3); margin-bottom: 10px;
+}
+
+/* ══ BUTTON STATES ══ */
+.btn-states { display: flex; flex-wrap: wrap; gap: 28px; align-items: flex-end; }
+.btn-state-wrap { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+
+.orb-btn {
+  height: 64px; min-width: 190px; padding: 0 28px;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  font-family: inherit; font-size: 15px; font-weight: 500;
+  cursor: pointer; position: relative; overflow: hidden;
+  border: none; background: transparent;
+}
+
+/* Idle */
+.btn-idle .orb-inner {
+  position: absolute; width: 120px; height: 120px;
+  top: -30px; left: 55px; border-radius: 50%;
+  background: var(--orb); filter: blur(18px); opacity: 0.9;
+  animation: orb-pulse-slow 5s ease-in-out infinite;
+}
+@keyframes orb-pulse-slow { 0%,100%{opacity:0.7;transform:scale(1)} 50%{opacity:1;transform:scale(1.1)} }
+.btn-idle .btn-label { position: relative; z-index: 1; color: white; display: flex; align-items: center; gap: 8px; }
+.btn-idle .btn-pip { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.7); }
+
+/* Processing */
+.btn-processing .flow-orb {
+  position: absolute; width: 80px; height: 80px; top: 50%; transform: translateY(-50%);
+  border-radius: 50%; background: var(--orb); filter: blur(18px); opacity: 0.9;
+  animation: flow-through 2.8s linear infinite;
+}
+.btn-processing .flow-orb-2 {
+  position: absolute; width: 56px; height: 56px; top: 50%; transform: translateY(-50%);
+  border-radius: 50%; background: var(--orb); filter: blur(12px); opacity: 0.8;
+  animation: flow-through 3.5s linear infinite; animation-delay: 0.7s;
+}
+@keyframes flow-through {
+  0%   { left: -20%; opacity: 0; }
+  8%   { opacity: 0.95; }
+  100% { left: 120%; opacity: 0; }
+}
+.btn-processing .btn-label { position: relative; z-index: 1; color: rgba(255,255,255,0.85); display: flex; align-items: center; gap: 8px; }
+.btn-processing .btn-pip { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,210,120,1); box-shadow: 0 0 14px rgba(255,210,120,0.9); }
+
+/* Success */
+.btn-success .success-orb {
+  position: absolute; left: 50%; top: 50%; width: 80px; height: 80px;
+  transform: translate(-50%,-50%); border-radius: 50%;
+  background: radial-gradient(circle, rgba(220,255,220,1) 0%, rgba(74,222,128,0.9) 30%, rgba(16,185,129,0.4) 65%, transparent 100%);
+  filter: blur(16px); animation: disperse 1.4s ease-out infinite;
+}
+@keyframes disperse { 0%{transform:translate(-50%,-50%) scale(0.4);opacity:1} 100%{transform:translate(-50%,-50%) scale(2.2);opacity:0} }
+.btn-success .btn-label { position: relative; z-index: 1; color: #d1fae5; display: flex; align-items: center; gap: 8px; }
+.btn-success .btn-pip { width: 9px; height: 9px; border-radius: 50%; background: #34d399; box-shadow: 0 0 14px rgba(52,211,153,0.9); }
+
+/* Error */
+.btn-error .error-orb {
+  position: absolute; left: 50%; top: 50%; width: 70px; height: 70px;
+  transform: translate(-50%,-50%); border-radius: 50%; opacity: 0.6;
+  background: radial-gradient(circle, rgba(255,230,230,1) 0%, rgba(248,113,113,0.8) 30%, rgba(239,68,68,0.2) 70%, transparent 100%);
+  filter: blur(18px);
+}
+.btn-error .btn-label { position: relative; z-index: 1; color: #fecaca; display: flex; align-items: center; gap: 8px; }
+.btn-error .btn-pip { width: 9px; height: 9px; border-radius: 50%; background: #f87171; box-shadow: 0 0 14px rgba(248,113,113,0.9); }
+
+/* ══ STEP TRACKER ══ */
+.steps-row {
+  display: flex; align-items: center; justify-content: space-between; position: relative;
+}
+.step-node { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.step-circle {
+  width: 52px; height: 52px; border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(255,255,255,0.06);
+  display: flex; align-items: center; justify-content: center; position: relative;
+}
+.step-orb-bg {
+  position: absolute; inset: 0; border-radius: 50%;
+  background: var(--orb); filter: blur(14px); opacity: 0; transition: opacity 0.4s;
+}
+.step-circle.active .step-orb-bg { opacity: 0.45; }
+.step-circle.done .step-orb-bg   { opacity: 0.3; }
+.step-num  { position: relative; z-index: 1; font-size: 13px; color: rgba(255,255,255,0.7); }
+.step-text { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.3); }
+.step-connector { flex: 1; height: 2px; background: rgba(255,255,255,0.06); border-radius: 100px; position: relative; overflow: hidden; }
+.step-connector.active .connector-orb {
+  position: absolute; width: 40px; height: 40px; top: 50%; transform: translateY(-50%);
+  background: var(--orb); filter: blur(12px); border-radius: 50%; opacity: 0.9;
+  animation: connector-flow 3s linear infinite;
+}
+@keyframes connector-flow { 0%{left:-10%} 100%{left:110%} }
+
+/* ══ TOAST ══ */
+.toast-demo {
+  height: 88px; border-radius: 24px; padding: 0 32px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.toast-orb-l {
+  position: absolute; left: 0; top: 50%; width: 100px; height: 100px;
+  transform: translateY(-50%); background: var(--orb); filter: blur(20px); opacity: 0.9;
+  border-radius: 50%; animation: toast-left 3s ease-in-out infinite;
+}
+.toast-orb-r {
+  position: absolute; right: 0; top: 50%; width: 100px; height: 100px;
+  transform: translateY(-50%); background: var(--orb); filter: blur(20px); opacity: 0.9;
+  border-radius: 50%; animation: toast-right 3s ease-in-out infinite;
+}
+@keyframes toast-left  { 0%{transform:translate(-40%,-50%) scale(1);opacity:0} 50%{transform:translate(80%,-50%) scale(1.2);opacity:1} 100%{transform:translate(160%,-50%) scale(1.6);opacity:0} }
+@keyframes toast-right { 0%{transform:translate(40%,-50%) scale(1);opacity:0} 50%{transform:translate(-80%,-50%) scale(1.2);opacity:1} 100%{transform:translate(-160%,-50%) scale(1.6);opacity:0} }
+.toast-content { position: relative; z-index: 1; }
+.toast-title { font-size: 14px; font-weight: 500; color: var(--ink); }
+.toast-sub   { font-size: 13px; color: rgba(255,255,255,0.45); margin-top: 2px; }
+.toast-badge { position: relative; z-index: 1; font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.3); }
+
+/* ══ VALIDATION ══ */
+.validation-wrap {
+  border-radius: 24px; border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04); padding: 24px; backdrop-filter: blur(20px);
+}
+.field-label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 12px; }
+.field-input { border-radius: 14px; border: 1px solid rgba(255,255,255,0.08); background: rgba(0,0,0,0.2); padding: 16px 18px; font-size: 15px; color: rgba(255,255,255,0.8); font-family: inherit; }
+.field-bar   { height: 2px; background: rgba(255,255,255,0.04); border-radius: 100px; overflow: hidden; position: relative; }
+.field-orb   {
+  position: absolute; width: 36px; height: 36px; top: 50%; transform: translateY(-50%);
+  background: var(--orb); filter: blur(10px); border-radius: 50%;
+  animation: validation-flow 2.5s linear infinite;
+}
+@keyframes validation-flow { 0%{left:0;opacity:0} 5%{opacity:1} 95%{opacity:1} 100%{left:100%;opacity:0} }
+
+/* ══ FILE TRANSFER ══ */
+.file-transfer {
+  height: 100px; border-radius: 28px; padding: 0 40px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.ft-orb {
+  position: absolute; width: 80px; height: 80px; top: 50%; transform: translateY(-50%);
+  background: var(--orb); filter: blur(16px); border-radius: 50%; opacity: 0.85;
+}
+.ft-title { font-size: 16px; font-weight: 500; color: var(--ink); position: relative; z-index: 1; }
+.ft-sub   { font-size: 13px; color: rgba(255,255,255,0.45); margin-top: 4px; position: relative; z-index: 1; }
+.ft-num   { font-size: 24px; font-weight: 500; color: var(--ink); position: relative; z-index: 1; }
+.ft-tag   { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-top: 2px; position: relative; z-index: 1; }
+
+/* ══ SKELETON — single card, shimmer pulse ══ */
+.skel-card-single {
+  border-radius: 24px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.03);
+  padding: 32px;
+  max-width: 480px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Shimmer sweep */
+.skel-shimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255,255,255,0.04) 50%,
+    transparent 60%
+  );
+  background-size: 200% 100%;
+  animation: shimmer-sweep 1.8s ease-in-out infinite;
+}
+@keyframes shimmer-sweep {
+  0%   { background-position: -100% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Individual elements pulse opacity */
+.skel-pulse {
+  animation: skel-breathe 1.8s ease-in-out infinite;
+}
+@keyframes skel-breathe {
+  0%,100% { opacity: 0.4; }
+  50%     { opacity: 0.7; }
+}
+
+.skel-content { position: relative; z-index: 1; }
+.skel-row     { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+.skel-avatar  { width: 44px; height: 44px; border-radius: 12px; background: rgba(255,255,255,0.08); flex-shrink: 0; }
+.skel-lines   { flex: 1; display: flex; flex-direction: column; gap: 9px; }
+.skel-line    { height: 10px; border-radius: 100px; background: rgba(255,255,255,0.08); }
+.skel-block   { height: 140px; border-radius: 16px; background: rgba(255,255,255,0.05); margin-bottom: 20px; }
+.skel-text-lines { display: flex; flex-direction: column; gap: 9px; }
+
+/* ── PRINCIPLE CARDS ── */
+.principle-card {
+  border-radius: 18px; padding: 28px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.03);
+  position: relative; overflow: hidden;
+}
+.principle-icon  { font-size: 26px; margin-bottom: 14px; }
+.principle-title { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 8px; letter-spacing: -0.01em; }
+.principle-body  { font-size: 13px; line-height: 1.7; color: var(--ink-mid); }
+
+/* ── TOKEN TABLE ── */
+.token-shell { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+.token-shell-hdr { display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; border-bottom: 1px solid var(--border); background: rgba(255,255,255,0.03); }
+.token-shell-title { font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.6); }
+.token-shell-ct    { font-size: 11px; color: var(--ink-dim); }
+table  { width: 100%; border-collapse: collapse; }
+th { text-align: left; font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-dim); padding: 11px 18px; border-bottom: 1px solid var(--border); }
+td { padding: 11px 18px; font-size: 13px; color: var(--ink-mid); border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: middle; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(255,255,255,0.02); }
+.tok     { font-family: 'Geist Mono','Courier New',monospace; font-size: 11px; color: rgba(255,179,107,0.9); background: rgba(255,179,107,0.08); padding: 2px 7px; border-radius: 4px; white-space: nowrap; }
+.tok-val { font-family: 'Geist Mono','Courier New',monospace; font-size: 12px; color: var(--ink); }
+.comp-badge { font-size: 10px; padding: 2px 7px; border-radius: 100px; background: rgba(255,255,255,0.05); color: var(--ink-dim); border: 1px solid var(--border); }
+
+/* ── NEXT CARDS ── */
+.next-card { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 16px; padding: 28px; }
+.next-icon  { font-size: 22px; margin-bottom: 12px; }
+.next-title { font-size: 15px; font-weight: 500; color: var(--ink); margin-bottom: 8px; letter-spacing: -0.01em; }
+.next-body  { font-size: 13px; color: var(--ink-mid); line-height: 1.65; }
+
+/* ── FOOTER ── */
+.case-footer {
+  position: relative; z-index: 1;
+  padding: 28px 48px; border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+  max-width: 1100px; margin: 0 auto;
+}
+.case-footer a {
+  font-size: 13px; color: var(--ink-dim);
+  text-decoration: none; display: flex; align-items: center; gap: 8px;
+  transition: color 0.15s;
+}
+.case-footer a:hover { color: var(--ink); }
+.case-footer a:first-child:hover svg { transform: translateX(-3px); }
+.case-footer a svg { transition: transform 0.2s; }
+.case-footer-ct { font-size: 12px; color: var(--ink-dim); }
+
+/* ── REVEAL ── */
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.on { opacity: 1; transform: none; }
+.d1{transition-delay:0.06s} .d2{transition-delay:0.13s} .d3{transition-delay:0.2s}
+
+@media (max-width: 800px) {
+  nav { padding: 18px 20px; }
+  .page { padding: 0 20px 100px; }
+  .hero { padding: 100px 0 64px; }
+  .cs-2col, .cs-3col { grid-template-columns: 1fr; gap: 24px; }
+  .demo-body { padding: 24px 20px; }
+  .case-footer { padding: 24px 20px; flex-direction: column; gap: 16px; }
+  .step-connector { display: none; }
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="skanda-portfolio.html" class="nav-back">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 2L4 7L9 12"/></svg>
+    Skanda
+  </a>
+  <div class="nav-tag">Case Study — 02</div>
+</nav>
+
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">
+      <span class="hero-dot"></span>
+      Motion Design System
+    </div>
+    <h1 class="hero-title">Orbs<br><em>Design System</em></h1>
+    <p class="hero-lead">A dark-mode interaction system where <strong>glass, light, and atmospheric motion become structural UX primitives</strong> — not decoration, but a vocabulary of state.</p>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-num">6</span><span class="stat-label">Core components</span></div>
+      <div class="stat"><span class="stat-num">1</span><span class="stat-label">Material language</span></div>
+      <div class="stat"><span class="stat-num">∞</span><span class="stat-label">State expressions</span></div>
+    </div>
+  </div>
+
+  <!-- THESIS -->
+  <section class="cs-section reveal">
+    <div class="cs-label">The Thesis <span>Why motion belongs in the system</span></div>
+    <div class="cs-2col">
+      <div>
+        <h2 class="cs-h2">State is felt,<br><em>not just seen.</em></h2>
+        <div class="cs-body"><p>Every design system has a state story.</p></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-content:start;">
+        <div class="principle-card reveal d1">
+          <div class="principle-icon" style="color:rgba(255,255,255,0.5)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+          <div class="principle-title">Motion as meaning</div>
+          
+        </div>
+        <div class="principle-card reveal d2">
+          <div class="principle-icon" style="color:rgba(255,255,255,0.5)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="8"/><line x1="12" y1="16" x2="12" y2="22"/><line x1="2" y1="12" x2="8" y2="12"/><line x1="16" y1="12" x2="22" y2="12"/></svg></div>
+          <div class="principle-title">Material transformation</div>
+          
+        </div>
+        <div class="principle-card reveal d3">
+          <div class="principle-icon" style="color:rgba(255,255,255,0.5)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/><path d="M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1"/></svg></div>
+          <div class="principle-title">Energy flows</div>
+          
+        </div>
+        <div class="principle-card reveal d1">
+          <div class="principle-icon" style="color:rgba(255,255,255,0.5)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M19.07 4.93L4.93 19.07"/></svg></div>
+          <div class="principle-title">Glass as vessel</div>
+          
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="pull-quote reveal">
+    Components that communicate through <em>material transformation</em> — not color changes, not opacity shifts. Light moving through glass.
+  </div>
+
+  <!-- PRIMARY BUTTON -->
+  <section class="cs-section reveal">
+    <div class="cs-label">Primary Button <span>State as material transformation</span></div>
+    <div class="demo-shell">
+      <div class="demo-header">
+        <div style="display:flex;align-items:center;gap:16px;">
+          <div class="demo-dots"><div class="demo-dot-ui"></div><div class="demo-dot-ui"></div><div class="demo-dot-ui"></div></div>
+          <span class="demo-label">Primary Button — 4 states</span>
+        </div>
+      </div>
+      <div class="demo-body">
+        <div class="btn-states">
+          <div class="btn-state-wrap">
+            <div class="state-label">Idle</div>
+            <button class="gpill orb-btn btn-idle">
+              <div class="orb-inner"></div>
+              <div class="btn-label"><div class="btn-pip"></div>Pay Now</div>
+            </button>
+          </div>
+          <div class="btn-state-wrap">
+            <div class="state-label">Processing</div>
+            <button class="gpill orb-btn btn-processing" style="min-width:230px;">
+              <div class="flow-orb"></div>
+              <div class="flow-orb-2"></div>
+              <div class="btn-label"><div class="btn-pip"></div>Processing Payment</div>
+            </button>
+          </div>
+          <div class="btn-state-wrap">
+            <div class="state-label">Success</div>
+            <button class="gpill orb-btn btn-success" style="min-width:220px;">
+              <div class="success-orb"></div>
+              <div class="btn-label"><div class="btn-pip"></div>Payment Complete</div>
+            </button>
+          </div>
+          <div class="btn-state-wrap">
+            <div class="state-label">Error</div>
+            <button class="gpill orb-btn btn-error">
+              <div class="error-orb"></div>
+              <div class="btn-label"><div class="btn-pip"></div>Payment Failed</div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP TRACKER -->
+  <section class="cs-section reveal">
+    <div class="cs-label">Step Tracker <span>Progress as energy transfer</span></div>
+    <div class="demo-shell">
+      <div class="demo-header">
+        <div style="display:flex;align-items:center;gap:16px;">
+          <div class="demo-dots"><div class="demo-dot-ui"></div><div class="demo-dot-ui"></div><div class="demo-dot-ui"></div></div>
+          <span class="demo-label">Step Tracker — Active on step 3</span>
+        </div>
+      </div>
+      <div class="demo-body">
+        <div class="gpill" style="padding:36px 40px;border-radius:28px;">
+          <div class="steps-row">
+            <div class="step-node">
+              <div class="step-circle done"><div class="step-orb-bg"></div><span class="step-num">01</span></div>
+              <span class="step-text">Step</span>
+            </div>
+            <div class="step-connector done"><div class="connector-orb"></div></div>
+            <div class="step-node">
+              <div class="step-circle done"><div class="step-orb-bg"></div><span class="step-num">02</span></div>
+              <span class="step-text">Step</span>
+            </div>
+            <div class="step-connector active"><div class="connector-orb"></div></div>
+            <div class="step-node">
+              <div class="step-circle active"><div class="step-orb-bg"></div><span class="step-num">03</span></div>
+              <span class="step-text">Step</span>
+            </div>
+            <div class="step-connector" style="opacity:0.4;"></div>
+            <div class="step-node">
+              <div class="step-circle"><div class="step-orb-bg"></div><span class="step-num" style="color:rgba(255,255,255,0.3);">04</span></div>
+              <span class="step-text">Step</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOAST + VALIDATION -->
+  <section class="cs-section reveal">
+    <div class="cs-label">Notification & Validation <span>Convergence and dispersal</span></div>
+    <div class="cs-2col" style="gap:24px;">
+      <div>
+        <div class="cs-body" style="margin-bottom:24px;">
+          <p>Notifications <strong>materialize through convergence</strong> — two orbs flowing toward each other, meeting, then dissipating. The message appears as the light converges.</p>
+        </div>
+        <div class="demo-shell">
+          <div class="demo-header">
+            <div class="demo-dots"><div class="demo-dot-ui"></div><div class="demo-dot-ui"></div><div class="demo-dot-ui"></div></div>
+            <span class="demo-label">Toast Notification</span>
+          </div>
+          <div class="demo-body" style="padding:24px;">
+            <div class="gpill toast-demo">
+              <div class="toast-orb-l"></div>
+              <div class="toast-orb-r"></div>
+              <div class="toast-content">
+                <div class="toast-title">Transfer Complete</div>
+                <div class="toast-sub">Funds settled successfully.</div>
+              </div>
+              <div class="toast-badge">Live</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="cs-body" style="margin-bottom:24px;">
+          <p>Validation is a <strong>subtle illuminated process</strong> — an orb scanning the input, completing its pass, confirming the field. Not a harsh red border. A quiet confirmation of correctness.</p>
+        </div>
+        <div class="demo-shell">
+          <div class="demo-header">
+            <div class="demo-dots"><div class="demo-dot-ui"></div><div class="demo-dot-ui"></div><div class="demo-dot-ui"></div></div>
+            <span class="demo-label">Validation Field</span>
+          </div>
+          <div class="demo-body" style="padding:24px;">
+            <div class="validation-wrap">
+              <div class="field-label">Routing Number</div>
+              <div class="field-input">021000021</div>
+              <div class="field-bar"><div class="field-orb"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FILE TRANSFER -->
+  <section class="cs-section reveal">
+    <div class="cs-label">File Transfer <span>Throughput as spatial density</span></div>
+    <div class="demo-shell">
+      <div class="demo-header">
+        <div style="display:flex;align-items:center;gap:16px;">
+          <div class="demo-dots"><div class="demo-dot-ui"></div><div class="demo-dot-ui"></div><div class="demo-dot-ui"></div></div>
+          <span class="demo-label">File Transfer — Active</span>
+        </div>
+      </div>
+      <div class="demo-body" style="padding:0;">
+        <div class="gpill file-transfer" style="border-radius:0;border:none;">
+          <div class="ft-orb" style="animation:flow-through 2s linear infinite;animation-delay:0s;"></div>
+          <div class="ft-orb" style="animation:flow-through 2.4s linear infinite;animation-delay:0.4s;"></div>
+          <div class="ft-orb" style="animation:flow-through 2.8s linear infinite;animation-delay:0.8s;"></div>
+          <div class="ft-orb" style="animation:flow-through 3.2s linear infinite;animation-delay:1.2s;"></div>
+          <div class="ft-orb" style="animation:flow-through 3.6s linear infinite;animation-delay:1.6s;"></div>
+          <div><div class="ft-title">Uploading Archive.zip</div><div class="ft-sub">Throughput visualized through orb density</div></div>
+          <div style="text-align:right;"><div class="ft-num">72%</div><div class="ft-tag">Active Transfer</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKELETON -->
+  <section class="cs-section reveal">
+    <div class="cs-label">Skeleton Loading <span>Atmospheric anticipation</span></div>
+          <div class="skel-card-single">
+        <div class="skel-shimmer"></div>
+        <div class="skel-content">
+          <div class="skel-row">
+            <div class="skel-avatar skel-pulse"></div>
+            <div class="skel-lines">
+              <div class="skel-line skel-pulse" style="width:55%;"></div>
+              <div class="skel-line skel-pulse" style="width:38%;animation-delay:0.15s;"></div>
+            </div>
+          </div>
+          <div class="skel-block skel-pulse" style="animation-delay:0.1s;"></div>
+          <div class="skel-text-lines">
+            <div class="skel-line skel-pulse" style="animation-delay:0.2s;"></div>
+            <div class="skel-line skel-pulse" style="width:82%;animation-delay:0.25s;"></div>
+            <div class="skel-line skel-pulse" style="width:60%;animation-delay:0.3s;"></div>
+          </div>
+        </div>
+      </div>
+          </div>
+          <div class="skel-block"></div>
+          <div class="skel-text-lines"><div class="skel-line"></div><div class="skel-line" style="width:80%;"></div><div class="skel-line" style="width:60%;"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOKEN SCHEMA -->
+  <section class="cs-section reveal">
+    <div class="cs-label">Motion Token Schema <span>How orbs are defined in the system</span></div>
+    <div class="token-shell reveal d1">
+      <div class="token-shell-hdr"><span class="token-shell-title">Orb Motion Tokens</span><span class="token-shell-ct">12 tokens</span></div>
+      <table>
+        <thead><tr><th>Token</th><th>Property</th><th>Component</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td><span class="tok">orb.gradient</span></td><td>Color gradient</td><td><span class="comp-badge">all</span></td><td><span class="tok-val">sunrise → purple → transparent</span></td></tr>
+          <tr><td><span class="tok">orb.blur.idle</span></td><td>Filter blur</td><td><span class="comp-badge">button</span></td><td><span class="tok-val">18px</span></td></tr>
+          <tr><td><span class="tok">orb.blur.flow</span></td><td>Filter blur</td><td><span class="comp-badge">transfer</span></td><td><span class="tok-val">16px</span></td></tr>
+          <tr><td><span class="tok">orb.opacity.idle</span></td><td>Opacity</td><td><span class="comp-badge">button</span></td><td><span class="tok-val">0.7 → 1.0 (pulse)</span></td></tr>
+          <tr><td><span class="tok">orb.opacity.flow</span></td><td>Opacity</td><td><span class="comp-badge">transfer</span></td><td><span class="tok-val">0 → 0.95 → 0</span></td></tr>
+          <tr><td><span class="tok">orb.duration.flow</span></td><td>Duration</td><td><span class="comp-badge">transfer</span></td><td><span class="tok-val">2.8s</span></td></tr>
+          <tr><td><span class="tok">orb.duration.pulse</span></td><td>Duration</td><td><span class="comp-badge">button</span></td><td><span class="tok-val">5s</span></td></tr>
+          <tr><td><span class="tok">orb.easing.flow</span></td><td>Timing</td><td><span class="comp-badge">transfer</span></td><td><span class="tok-val">linear</span></td></tr>
+          <tr><td><span class="tok">orb.easing.pulse</span></td><td>Timing</td><td><span class="comp-badge">button</span></td><td><span class="tok-val">ease-in-out</span></td></tr>
+          <tr><td><span class="tok">orb.size.btn</span></td><td>Diameter</td><td><span class="comp-badge">button</span></td><td><span class="tok-val">120px</span></td></tr>
+          <tr><td><span class="tok">orb.size.connector</span></td><td>Diameter</td><td><span class="comp-badge">stepper</span></td><td><span class="tok-val">40px</span></td></tr>
+          <tr><td><span class="tok">orb.size.validation</span></td><td>Diameter</td><td><span class="comp-badge">input</span></td><td><span class="tok-val">36px</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- NEXT -->
+  <section class="cs-section reveal">
+    <div class="cs-label">What's Next</div>
+    <div class="cs-3col">
+      <div class="next-card"><div class="next-icon" style="color:rgba(255,255,255,0.4)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17a10 10 0 0 0-20 0"/><path d="M6 17a6 6 0 0 1 12 0"/><path d="M10 17a2 2 0 0 1 4 0"/></svg></div><div class="next-title">Gradient as token</div><div class="next-body">Swap the orb palette per brand — arctic to ember.</div></div>
+      <div class="next-card"><div class="next-icon" style="color:rgba(255,255,255,0.4)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l18 18M3 21L21 3"/><path d="M3 12h9"/><path d="M12 3v9"/></svg></div><div class="next-title">Full coverage</div><div class="next-body">Extend the material vocabulary to every component.</div></div>
+      <div class="next-card"><div class="next-icon" style="color:rgba(255,255,255,0.4)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div><div class="next-title">Figma motion</div><div class="next-body">Export tokens to Smart Animate, design to prod in sync.</div></div>
+    </div>
+  </section>
+
+</div>
+
+<footer class="case-footer">
+  <a href="skanda-portfolio.html">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 2L4 7L9 12"/></svg>
+    Back to Skanda
+  </a>
+  <div class="case-footer-ct">Case Study 02 / 03</div>
+  <a href="dynamic-type.html">
+    Next: Dynamic Type
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 2L10 7L5 12"/></svg>
+  </a>
+</footer>
+
+<script>
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 10), { passive: true });
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); obs.unobserve(e.target); } });
+}, { threshold: 0.07 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
