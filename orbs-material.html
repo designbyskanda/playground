@@ -343,6 +343,28 @@ nav.scrolled {
   overflow: hidden;
 }
 
+/* Drifting orb — the atmospheric light moving through the surface */
+.skel-orb {
+  position: absolute;
+  width: 220px; height: 220px;
+  border-radius: 50%;
+  top: -40px; left: -40px;
+  background: radial-gradient(circle at center,
+    rgba(255,245,214,0.55) 0%,
+    rgba(255,179,107,0.4) 22%,
+    rgba(255,122,107,0.28) 45%,
+    rgba(192,132,252,0.2) 70%,
+    transparent 100%);
+  filter: blur(36px);
+  pointer-events: none;
+  animation: skel-orb-drift 6s ease-in-out infinite;
+}
+@keyframes skel-orb-drift {
+  0%   { transform: translate(0, 0) scale(1);     opacity: 0.7; }
+  50%  { transform: translate(280px, 120px) scale(1.15); opacity: 1; }
+  100% { transform: translate(0, 0) scale(1);     opacity: 0.7; }
+}
+
 /* Shimmer sweep */
 .skel-shimmer {
   position: absolute;
@@ -350,7 +372,7 @@ nav.scrolled {
   background: linear-gradient(
     105deg,
     transparent 40%,
-    rgba(255,255,255,0.04) 50%,
+    rgba(255,255,255,0.05) 50%,
     transparent 60%
   );
   background-size: 200% 100%;
@@ -445,7 +467,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
 <body>
 
 <nav id="nav">
-  <a href="skanda-portfolio.html" class="nav-back">
+  <a href="index.html" class="nav-back">
     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 2L4 7L9 12"/></svg>
     Skanda
   </a>
@@ -458,7 +480,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
   <div class="hero">
     <div class="hero-eyebrow">
       <span class="hero-dot"></span>
-      Motion Design System
+      Experimental Concept — Motion System
     </div>
     <h1 class="hero-title">Orbs<br><em>Design System</em></h1>
     <p class="hero-lead">A dark-mode interaction system where <strong>glass, light, and atmospheric motion become structural UX primitives</strong> — not decoration, but a vocabulary of state.</p>
@@ -664,27 +686,22 @@ tr:hover td { background: rgba(255,255,255,0.02); }
   <!-- SKELETON -->
   <section class="cs-section reveal">
     <div class="cs-label">Skeleton Loading <span>Atmospheric anticipation</span></div>
-          <div class="skel-card-single">
-        <div class="skel-shimmer"></div>
-        <div class="skel-content">
-          <div class="skel-row">
-            <div class="skel-avatar skel-pulse"></div>
-            <div class="skel-lines">
-              <div class="skel-line skel-pulse" style="width:55%;"></div>
-              <div class="skel-line skel-pulse" style="width:38%;animation-delay:0.15s;"></div>
-            </div>
-          </div>
-          <div class="skel-block skel-pulse" style="animation-delay:0.1s;"></div>
-          <div class="skel-text-lines">
-            <div class="skel-line skel-pulse" style="animation-delay:0.2s;"></div>
-            <div class="skel-line skel-pulse" style="width:82%;animation-delay:0.25s;"></div>
-            <div class="skel-line skel-pulse" style="width:60%;animation-delay:0.3s;"></div>
+    <div class="skel-card-single">
+      <div class="skel-orb"></div>
+      <div class="skel-shimmer"></div>
+      <div class="skel-content">
+        <div class="skel-row">
+          <div class="skel-avatar skel-pulse"></div>
+          <div class="skel-lines">
+            <div class="skel-line skel-pulse" style="width:55%;"></div>
+            <div class="skel-line skel-pulse" style="width:38%;animation-delay:0.15s;"></div>
           </div>
         </div>
-      </div>
-          </div>
-          <div class="skel-block"></div>
-          <div class="skel-text-lines"><div class="skel-line"></div><div class="skel-line" style="width:80%;"></div><div class="skel-line" style="width:60%;"></div></div>
+        <div class="skel-block skel-pulse" style="animation-delay:0.1s;"></div>
+        <div class="skel-text-lines">
+          <div class="skel-line skel-pulse" style="animation-delay:0.2s;"></div>
+          <div class="skel-line skel-pulse" style="width:82%;animation-delay:0.25s;"></div>
+          <div class="skel-line skel-pulse" style="width:60%;animation-delay:0.3s;"></div>
         </div>
       </div>
     </div>
@@ -715,20 +732,20 @@ tr:hover td { background: rgba(255,255,255,0.02); }
     </div>
   </section>
 
-  <!-- NEXT -->
+  <!-- VALUE -->
   <section class="cs-section reveal">
-    <div class="cs-label">What's Next</div>
+    <div class="cs-label">What value this brings</div>
     <div class="cs-3col">
-      <div class="next-card"><div class="next-icon" style="color:rgba(255,255,255,0.4)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 17a10 10 0 0 0-20 0"/><path d="M6 17a6 6 0 0 1 12 0"/><path d="M10 17a2 2 0 0 1 4 0"/></svg></div><div class="next-title">Gradient as token</div><div class="next-body">Swap the orb palette per brand — arctic to ember.</div></div>
-      <div class="next-card"><div class="next-icon" style="color:rgba(255,255,255,0.4)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l18 18M3 21L21 3"/><path d="M3 12h9"/><path d="M12 3v9"/></svg></div><div class="next-title">Full coverage</div><div class="next-body">Extend the material vocabulary to every component.</div></div>
-      <div class="next-card"><div class="next-icon" style="color:rgba(255,255,255,0.4)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div><div class="next-title">Figma motion</div><div class="next-body">Export tokens to Smart Animate, design to prod in sync.</div></div>
+      <div class="next-card"><div class="next-icon" style="color:rgba(255,255,255,0.4)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 7.4H22l-6 4.6 2.3 7.4-6.3-4.6L5.7 21.4 8 14 2 9.4h7.6z"/></svg></div><div class="next-title">A way for AI products to stand out</div><div class="next-body">The AI app space looks increasingly the same. Treating motion and light as structural material — not decoration — gives an emerging product a distinct, ownable feel.</div></div>
+      <div class="next-card"><div class="next-icon" style="color:rgba(255,255,255,0.4)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a7 7 0 0 0-7 7c0 3 2 5 2 7h10c0-2 2-4 2-7a7 7 0 0 0-7-7z"/><path d="M9 21h6"/></svg></div><div class="next-title">Delight as differentiation</div><div class="next-body">When core capabilities converge, the interaction layer becomes the moat. Felt state — energy flowing, dispersing, converging — makes a product memorable.</div></div>
+      <div class="next-card"><div class="next-icon" style="color:rgba(255,255,255,0.4)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg></div><div class="next-title">A coherent system, not effects</div><div class="next-body">Because every motion is a token, delight stays consistent across the whole product instead of becoming one-off flourishes that drift over time.</div></div>
     </div>
   </section>
 
 </div>
 
 <footer class="case-footer">
-  <a href="skanda-portfolio.html">
+  <a href="index.html">
     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 2L4 7L9 12"/></svg>
     Back to Skanda
   </a>
