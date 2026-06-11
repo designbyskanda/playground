@@ -146,55 +146,7 @@ nav.scrolled {
 .stat-card-label { font-size: 13px; color: var(--ink-mid); line-height: 1.5; }
 
 /* ── DEVICE FRAME ── */
-.device-frame {
-  width: 280px;
-  background: #0a0a0e;
-  border-radius: 40px;
-  border: 1px solid rgba(255,255,255,0.12);
-  box-shadow:
-    0 0 0 8px #0e0e12,
-    0 0 0 9px rgba(255,255,255,0.06),
-    0 32px 80px rgba(0,0,0,0.7);
-  position: relative;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-/* Notch */
-.device-frame::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 50%; transform: translateX(-50%);
-  width: 100px; height: 28px;
-  background: #0a0a0e;
-  border-radius: 0 0 20px 20px;
-  z-index: 10;
-  border: 1px solid rgba(255,255,255,0.08);
-  border-top: none;
-}
-/* Screen reflection */
-.device-frame::after {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 50%;
-  background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, transparent 100%);
-  pointer-events: none; z-index: 5; border-radius: 40px 40px 0 0;
-}
-.device-screen {
-  padding: 48px 24px 32px;
-  min-height: 420px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0;
-  position: relative; z-index: 1;
-}
-.device-size-name {
-  font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase;
-  color: rgba(255,255,255,0.25); margin-bottom: 32px;
-  font-family: 'Geist Sans', sans-serif;
-}
-
-/* ── THE BUTTON inside device ── */
+/* ── THE BUTTON ── */
 .demo-btn {
   background: #ffffff;
   color: #050507;
@@ -207,8 +159,6 @@ nav.scrolled {
   height: 2.5em;
   line-height: 1;
   display: flex; align-items: center; justify-content: center;
-  width: 100%;
-  max-width: 220px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -218,9 +168,9 @@ nav.scrolled {
 
 /* Overflow indicator */
 .overflow-badge {
-  margin-top: 12px;
+  margin-top: 4px;
   font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;
-  padding: 3px 8px; border-radius: 100px;
+  padding: 3px 10px; border-radius: 100px;
   border: 1px solid; font-family: 'Geist Sans', sans-serif;
   opacity: 0; transition: opacity 0.3s;
 }
@@ -228,28 +178,36 @@ nav.scrolled {
 .overflow-badge.warn { color: #f5c842; border-color: rgba(245,200,66,0.3); background: rgba(245,200,66,0.08); opacity: 1; }
 .overflow-badge.pass { color: #6ee89a; border-color: rgba(62,207,142,0.3); background: rgba(62,207,142,0.08); opacity: 1; }
 
-/* ── DEVICE GRID ── */
+/* ── SIZE GRID (clean cards, no phone) ── */
 .device-grid {
-  display: flex;
-  gap: 32px;
-  align-items: flex-start;
-  overflow-x: auto;
-  padding: 20px 0 32px;
-  scrollbar-width: none;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+  padding: 8px 0 16px;
 }
-.device-grid::-webkit-scrollbar { display: none; }
-
-.device-col {
-  display: flex; flex-direction: column; align-items: center; gap: 16px;
-  flex-shrink: 0;
+.size-col {
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
 }
-.device-label {
+.size-col-head {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+}
+.size-col-name {
   font-size: 11px; font-weight: 500; letter-spacing: 0.08em;
-  text-transform: uppercase; color: var(--ink-dim); text-align: center;
+  text-transform: uppercase; color: var(--ink-mid); text-align: center;
 }
-.device-sub {
-  font-size: 11px; color: rgba(255,255,255,0.2); text-align: center;
-  margin-top: -10px;
+.size-col-pct {
+  font-size: 11px; color: rgba(255,255,255,0.25);
+  font-family: 'Space Grotesk', monospace;
+}
+.size-stage {
+  width: 100%;
+  min-height: 130px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px 16px;
+  overflow: hidden;
 }
 
 /* ── SLIDER SECTION ── */
@@ -470,6 +428,7 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
   .hero { padding: 100px 0 64px; }
   .cs-2col { grid-template-columns: 1fr; gap: 32px; }
   .cs-3col, .finding-grid { grid-template-columns: 1fr; }
+  .device-grid { grid-template-columns: repeat(2, 1fr); }
   .slider-body { grid-template-columns: 1fr; gap: 32px; }
   .case-footer { padding: 24px 20px; flex-direction: column; gap: 16px; }
 }
@@ -526,27 +485,12 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
 }
 .live-status-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
 
-/* Device broken styles injected via class */
-.device-frame.showing-broken .demo-btn {
-  height: 44px !important;
-  min-height: unset !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: clip !important;
-  max-width: 200px !important;
-}
-.device-frame.showing-broken .demo-btn.overflow {
-  height: 44px !important;
-  white-space: nowrap !important;
-  padding: 0 20px !important;
-}
-
 </style>
 </head>
 <body>
 
 <nav id="nav">
-  <a href="skanda-portfolio.html" class="nav-back">
+  <a href="index.html" class="nav-back">
     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 2L4 7L9 12"/></svg>
     Skanda
   </a>
@@ -557,7 +501,7 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
 
   <!-- HERO -->
   <div class="hero">
-    <div class="hero-eyebrow"><span class="hero-eyebrow-dot"></span>Dynamic Type — Visualization</div>
+    <div class="hero-eyebrow"><span class="hero-eyebrow-dot"></span>Experimental Concept — Visualization</div>
     <h1 class="hero-title">We spec it.<br><em>We never see it.</em></h1>
     <p class="hero-lead">
       Dynamic type is specced in every design system. <strong>Almost no one visualizes what actually happens</strong> when a user cranks their font size to Accessibility XL.
@@ -604,7 +548,7 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
 
   <!-- SIDE BY SIDE DEVICE VIEW -->
   <section class="cs-section reveal">
-    <div class="cs-label">All Sizes, Side by Side <span>What a primary button actually looks like across every Dynamic Type setting</span></div>
+    <div class="cs-label">One Button, Every Size <span>The same primary button rendered at five Dynamic Type settings</span></div>
 
     <div class="device-grid" id="deviceGrid">
       <!-- Populated by JS -->
@@ -662,22 +606,22 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
 
   <!-- FINDINGS -->
   <section class="cs-section reveal">
-    <div class="cs-label">What Breaks and When <span>Three categories of failure</span></div>
+    <div class="cs-label">Why it breaks <span>Two common mistakes, and the fix</span></div>
     <div class="finding-grid">
       <div class="finding-card critical">
-        <div class="finding-label"><span class="fl-dot"></span>Critical</div>
-        <div class="finding-title">Text truncates silently</div>
-        <div class="finding-body">At Accessibility sizes, <code style="font-size:11px;color:rgba(255,179,107,0.9);background:rgba(255,179,107,0.08);padding:1px 5px;border-radius:3px;">white-space: nowrap</code> clips the label with no indication to the user. The button still appears functional. The label is gone.</div>
+        <div class="finding-label"><span class="fl-dot"></span>Mistake 1</div>
+        <div class="finding-title">The label gets cut off</div>
+        <div class="finding-body">Locking text to one line with <code style="font-size:11px;color:rgba(255,179,107,0.9);background:rgba(255,179,107,0.08);padding:1px 5px;border-radius:3px;">white-space: nowrap</code> means that at large sizes the words run past the edge and disappear. The button still looks tappable — but the label is gone, and no one notices in design review.</div>
       </div>
       <div class="finding-card warning">
-        <div class="finding-label"><span class="fl-dot"></span>Warning</div>
-        <div class="finding-title">Fixed-height containers break</div>
-        <div class="finding-body">Buttons with a hardcoded <code style="font-size:11px;color:rgba(255,179,107,0.9);background:rgba(255,179,107,0.08);padding:1px 5px;border-radius:3px;">height: 44px</code> overflow their container at larger sizes. The text bleeds into adjacent elements or gets clipped by overflow hidden.</div>
+        <div class="finding-label"><span class="fl-dot"></span>Mistake 2</div>
+        <div class="finding-title">The button can't grow</div>
+        <div class="finding-body">A fixed <code style="font-size:11px;color:rgba(255,179,107,0.9);background:rgba(255,179,107,0.08);padding:1px 5px;border-radius:3px;">height: 44px</code> can't stretch to fit bigger text. The label spills out of the button or gets clipped — and neighboring elements get shoved around.</div>
       </div>
       <div class="finding-card pass">
-        <div class="finding-label"><span class="fl-dot"></span>Solution</div>
-        <div class="finding-title">Use min-height and em units</div>
-        <div class="finding-body">Setting <code style="font-size:11px;color:rgba(255,179,107,0.9);background:rgba(255,179,107,0.08);padding:1px 5px;border-radius:3px;">min-height: 2.5em</code> and <code style="font-size:11px;color:rgba(255,179,107,0.9);background:rgba(255,179,107,0.08);padding:1px 5px;border-radius:3px;">height: auto</code> lets the button grow with the text. The layout adapts instead of breaking.</div>
+        <div class="finding-label"><span class="fl-dot"></span>The fix</div>
+        <div class="finding-title">Let it size to its content</div>
+        <div class="finding-body">Swap fixed pixels for <code style="font-size:11px;color:rgba(255,179,107,0.9);background:rgba(255,179,107,0.08);padding:1px 5px;border-radius:3px;">min-height</code> and <code style="font-size:11px;color:rgba(255,179,107,0.9);background:rgba(255,179,107,0.08);padding:1px 5px;border-radius:3px;">em</code> units, and let text wrap. The button grows with the type and the layout flexes around it — nothing clips, nothing hides.</div>
       </div>
     </div>
   </section>
@@ -706,30 +650,30 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
     </div>
   </section>
 
-  <!-- NEXT -->
+  <!-- VALUE -->
   <section class="cs-section reveal">
-    <div class="cs-label">What's Next</div>
+    <div class="cs-label">What value this brings</div>
     <div class="cs-3col">
       <div class="next-card">
         <div class="next-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18"/></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
         </div>
-        <div class="next-title">Full component library</div>
-        <div class="next-body">Every component, visualized at all 12 sizes.</div>
+        <div class="next-title">Richer component documentation</div>
+        <div class="next-body">Design and tech docs could show a component live across every accessibility view, not just one static frame — making the spec something you see, not just read.</div>
       </div>
       <div class="next-card">
         <div class="next-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v18H3z"/><path d="M3 9h18M9 21V9"/></svg>
         </div>
-        <div class="next-title">Figma plugin</div>
-        <div class="next-body">Generate a Dynamic Type preview from any frame.</div>
+        <div class="next-title">Live prototype environments</div>
+        <div class="next-body">Scale a real screen to any accessibility size on the fly — instantly see where content slips below the fold, where layouts expand, and where things break.</div>
       </div>
       <div class="next-card">
         <div class="next-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 0 20c-2.5 0-3-1.5-3-3s.5-3 .5-4.5C9.5 12 7 10 7 8c0-3 2-5 5-6"/></svg>
         </div>
-        <div class="next-title">Design review checklist</div>
-        <div class="next-body">No component ships without an AX3 sign-off.</div>
+        <div class="next-title">Beyond type, into vision</div>
+        <div class="next-body">Imagine the same screen viewed through color-blindness simulations or quick translations — catching where contrast fails or longer copy reflows before it ships.</div>
       </div>
     </div>
   </section>
@@ -737,7 +681,7 @@ input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
 </div>
 
 <footer class="case-footer">
-  <a href="skanda-portfolio.html">
+  <a href="index.html">
     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 2L4 7L9 12"/></svg>
     Back to Skanda
   </a>
@@ -774,16 +718,14 @@ function buildDeviceGrid() {
     const size = DT_SIZES[idx];
     const fs = (BASE_FONT * size.pct / 100).toFixed(1);
     const col = document.createElement('div');
-    col.className = 'device-col reveal d' + (i+1);
-    const shouldWrap = size.pct >= 159;
+    col.className = 'size-col reveal d' + (i+1);
     col.innerHTML = `
-      <div class="device-label">${size.name}</div>
-      <div class="device-sub">${size.pct}%</div>
-      <div class="device-frame" id="deviceFrame${idx}">
-        <div class="device-screen">
-          <div class="device-size-name">${size.ios}</div>
-          <button class="demo-btn${shouldWrap ? ' overflow' : ''}" id="deviceBtn${idx}" style="font-size:${fs}px;">Confirm Payment</button>
-        </div>
+      <div class="size-col-head">
+        <span class="size-col-name">${size.name}</span>
+        <span class="size-col-pct">${size.pct}%</span>
+      </div>
+      <div class="size-stage" id="deviceFrame${idx}">
+        <button class="demo-btn" id="deviceBtn${idx}" style="font-size:${fs}px;">Confirm Payment</button>
       </div>
       <span class="overflow-badge ${size.status}" id="deviceBadge${idx}">${size.status === 'pass' ? 'Pass' : size.status === 'warn' ? 'Warning' : 'Critical'}</span>`;
     grid.appendChild(col);
@@ -803,18 +745,15 @@ function updateDeviceFrames() {
     btn.style.fontSize = fs + 'px';
 
     if (isBroken) {
-      frame.classList.add('showing-broken');
-      // Force broken styles inline
       btn.style.height = '44px';
       btn.style.minHeight = 'unset';
       btn.style.whiteSpace = 'nowrap';
       btn.style.overflow = 'hidden';
       btn.style.textOverflow = 'clip';
-      btn.style.maxWidth = '200px';
+      btn.style.maxWidth = '100%';
       btn.style.padding = '0 20px';
       btn.classList.remove('overflow');
 
-      // Show badge based on actual breakage
       if (size.pct >= 147) {
         badge.className = 'overflow-badge fail';
         badge.textContent = 'Text clipped';
@@ -826,13 +765,12 @@ function updateDeviceFrames() {
         badge.textContent = 'Pass';
       }
     } else {
-      frame.classList.remove('showing-broken');
       btn.style.height = '';
       btn.style.minHeight = '2.5em';
       btn.style.whiteSpace = 'normal';
       btn.style.overflow = '';
       btn.style.textOverflow = '';
-      btn.style.maxWidth = '220px';
+      btn.style.maxWidth = '100%';
       btn.style.padding = size.pct >= 159 ? '12px 20px' : '0 20px';
       if (size.pct >= 159) btn.classList.add('overflow');
       else btn.classList.remove('overflow');
