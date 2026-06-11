@@ -7,7 +7,6 @@
 <title>Orbs — Material Design System</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/geist@1.3.1/dist/fonts/geist-sans/style.css">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -100,7 +99,7 @@ nav.scrolled {
 @keyframes dot-pulse { 0%,100%{transform:scale(1);opacity:0.7} 50%{transform:scale(1.5);opacity:1} }
 
 .hero-title {
-  font-family: "Space Grotesk", "Geist Sans", sans-serif;
+  font-family: "Geist Sans", "Geist", ui-sans-serif, system-ui, sans-serif;
   font-size: clamp(52px,7vw,86px); font-weight: 500;
   line-height: 1.04; letter-spacing: -0.035em;
   color: var(--ink); margin-bottom: 28px;
@@ -126,7 +125,7 @@ nav.scrolled {
   display: flex; justify-content: space-between; align-items: baseline;
 }
 .cs-label span { font-weight: 400; letter-spacing: 0; text-transform: none; font-size: 12px; color: var(--ink-dim); }
-.cs-h2 { font-family: "Space Grotesk", "Geist Sans", sans-serif; font-size: clamp(28px,3.5vw,44px); font-weight: 500; letter-spacing: -0.025em; line-height: 1.1; color: var(--ink); margin-bottom: 20px; }
+.cs-h2 { font-family: "Geist Sans", "Geist", ui-sans-serif, system-ui, sans-serif; font-size: clamp(28px,3.5vw,44px); font-weight: 500; letter-spacing: -0.025em; line-height: 1.1; color: var(--ink); margin-bottom: 20px; }
 .cs-h2 em { font-style: normal; font-weight: 300; color: rgba(255,255,255,0.35); }
 .cs-body { font-size: 15px; line-height: 1.8; color: var(--ink-mid); }
 .cs-body p + p { margin-top: 16px; }
@@ -136,13 +135,13 @@ nav.scrolled {
 
 /* ── PULL QUOTE ── */
 .pull-quote {
-  font-family: 'Instrument Serif', serif; font-style: italic;
-  font-size: clamp(20px,2.6vw,32px); line-height: 1.5;
+  font-family: "Geist Sans", "Geist", ui-sans-serif, system-ui, sans-serif; font-style: normal;
+  font-size: clamp(22px,2.8vw,34px); font-weight: 500; line-height: 1.3; letter-spacing: -0.02em;
   color: var(--ink); padding: 52px 0;
   border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
   margin: 64px 0;
 }
-.pull-quote em { color: rgba(255,179,107,0.9); }
+.pull-quote em { font-style: normal; color: rgba(255,179,107,0.9); }
 
 /* ── GLASS PILL ── */
 .gpill {
@@ -332,74 +331,6 @@ nav.scrolled {
 .ft-num   { font-size: 24px; font-weight: 500; color: var(--ink); position: relative; z-index: 1; }
 .ft-tag   { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-top: 2px; position: relative; z-index: 1; }
 
-/* ══ SKELETON — single card, shimmer pulse ══ */
-.skel-card-single {
-  border-radius: 24px;
-  border: 1px solid var(--border);
-  background: rgba(255,255,255,0.03);
-  padding: 32px;
-  max-width: 480px;
-  position: relative;
-  overflow: hidden;
-}
-
-/* Drifting orb — the atmospheric light moving through the surface */
-.skel-orb {
-  position: absolute;
-  width: 220px; height: 220px;
-  border-radius: 50%;
-  top: -40px; left: -40px;
-  background: radial-gradient(circle at center,
-    rgba(255,245,214,0.55) 0%,
-    rgba(255,179,107,0.4) 22%,
-    rgba(255,122,107,0.28) 45%,
-    rgba(192,132,252,0.2) 70%,
-    transparent 100%);
-  filter: blur(36px);
-  pointer-events: none;
-  animation: skel-orb-drift 6s ease-in-out infinite;
-}
-@keyframes skel-orb-drift {
-  0%   { transform: translate(0, 0) scale(1);     opacity: 0.7; }
-  50%  { transform: translate(280px, 120px) scale(1.15); opacity: 1; }
-  100% { transform: translate(0, 0) scale(1);     opacity: 0.7; }
-}
-
-/* Shimmer sweep */
-.skel-shimmer {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    105deg,
-    transparent 40%,
-    rgba(255,255,255,0.05) 50%,
-    transparent 60%
-  );
-  background-size: 200% 100%;
-  animation: shimmer-sweep 1.8s ease-in-out infinite;
-}
-@keyframes shimmer-sweep {
-  0%   { background-position: -100% 0; }
-  100% { background-position: 200% 0; }
-}
-
-/* Individual elements pulse opacity */
-.skel-pulse {
-  animation: skel-breathe 1.8s ease-in-out infinite;
-}
-@keyframes skel-breathe {
-  0%,100% { opacity: 0.4; }
-  50%     { opacity: 0.7; }
-}
-
-.skel-content { position: relative; z-index: 1; }
-.skel-row     { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
-.skel-avatar  { width: 44px; height: 44px; border-radius: 12px; background: rgba(255,255,255,0.08); flex-shrink: 0; }
-.skel-lines   { flex: 1; display: flex; flex-direction: column; gap: 9px; }
-.skel-line    { height: 10px; border-radius: 100px; background: rgba(255,255,255,0.08); }
-.skel-block   { height: 140px; border-radius: 16px; background: rgba(255,255,255,0.05); margin-bottom: 20px; }
-.skel-text-lines { display: flex; flex-direction: column; gap: 9px; }
-
 /* ── PRINCIPLE CARDS ── */
 .principle-card {
   border-radius: 18px; padding: 28px;
@@ -485,7 +416,7 @@ tr:hover td { background: rgba(255,255,255,0.02); }
     <h1 class="hero-title">Orbs<br><em>Design System</em></h1>
     <p class="hero-lead">A dark-mode interaction system where <strong>glass, light, and atmospheric motion become structural UX primitives</strong> — not decoration, but a vocabulary of state.</p>
     <div class="hero-stats">
-      <div class="stat"><span class="stat-num">6</span><span class="stat-label">Core components</span></div>
+      <div class="stat"><span class="stat-num">5</span><span class="stat-label">Core components</span></div>
       <div class="stat"><span class="stat-num">1</span><span class="stat-label">Material language</span></div>
       <div class="stat"><span class="stat-num">∞</span><span class="stat-label">State expressions</span></div>
     </div>
@@ -678,30 +609,6 @@ tr:hover td { background: rgba(255,255,255,0.02); }
           <div class="ft-orb" style="animation:flow-through 3.6s linear infinite;animation-delay:1.6s;"></div>
           <div><div class="ft-title">Uploading Archive.zip</div><div class="ft-sub">Throughput visualized through orb density</div></div>
           <div style="text-align:right;"><div class="ft-num">72%</div><div class="ft-tag">Active Transfer</div></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SKELETON -->
-  <section class="cs-section reveal">
-    <div class="cs-label">Skeleton Loading <span>Atmospheric anticipation</span></div>
-    <div class="skel-card-single">
-      <div class="skel-orb"></div>
-      <div class="skel-shimmer"></div>
-      <div class="skel-content">
-        <div class="skel-row">
-          <div class="skel-avatar skel-pulse"></div>
-          <div class="skel-lines">
-            <div class="skel-line skel-pulse" style="width:55%;"></div>
-            <div class="skel-line skel-pulse" style="width:38%;animation-delay:0.15s;"></div>
-          </div>
-        </div>
-        <div class="skel-block skel-pulse" style="animation-delay:0.1s;"></div>
-        <div class="skel-text-lines">
-          <div class="skel-line skel-pulse" style="animation-delay:0.2s;"></div>
-          <div class="skel-line skel-pulse" style="width:82%;animation-delay:0.25s;"></div>
-          <div class="skel-line skel-pulse" style="width:60%;animation-delay:0.3s;"></div>
         </div>
       </div>
     </div>
